@@ -1,7 +1,10 @@
 package com.dong.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * List集合帮助类
@@ -88,5 +91,74 @@ public final class ListUtil {
 		    result.add(value);
 		}
 		return result;
+	}
+	
+	/**
+	 * 求两个集合的差集
+	 * @param list1 集合1
+	 * @param list2 集合2
+	 * @return List<String>
+	 */
+	public static List<String> minus(List<String> list1,List<String> list2){
+		List<String> list = new ArrayList<String>();
+		List<String> history = new ArrayList<String>();
+		List<String> longerList = null;
+		List<String> shorterList = null;
+		
+		if(list1.size() > list2.size()){
+			longerList = list1;
+			shorterList = list2;
+		} else {
+			longerList = list2;
+			shorterList = list1;
+		}
+		
+		for(String e : longerList){
+			if(!list.contains(e)){
+				list.add(e);
+			}
+		}
+		
+		for(String e : shorterList){	
+			if(list.contains(e)){
+				history.add(e);
+				list.remove(e);
+			} else {
+				if(!history.contains(e)){
+					list.add(e);
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * 求两个集合的交集
+	 * @param list1 集合1
+	 * @param list2 集合2
+	 * @return
+	 */
+	public static List<String> intersect(List<String> list1,List<String> list2){
+		Map<String, Boolean> map = new HashMap<String, Boolean>();
+		for(String e : list1){
+			if(!map.containsKey(e)){
+				map.put(e, Boolean.FALSE);
+			}
+		}
+		
+		for(String e : list2){
+			if(map.containsKey(e)){
+				map.put(e, Boolean.TRUE);
+			}
+		}
+		
+		List<String> list = new ArrayList<String>();
+		for(Entry<String, Boolean> e : map.entrySet()){
+			if(e.getValue().equals(Boolean.TRUE)){
+				list.add(e.getKey());
+			}
+		}
+		return list;
 	}
 }
